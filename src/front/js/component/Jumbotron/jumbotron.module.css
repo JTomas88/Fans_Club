@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 100vh; /* Ajusta el tamaño de altura si es necesario */
+    text-align: start; /* Alinea el texto en el centro horizontalmente */
+    background-image: url(../../../assets/fronteyes.png);
+    background-repeat: no-repeat;
+  }
+  
+  .title {
+    font-size: 50px;
+    color: white;
+    margin-bottom: 300px;
+  }
