@@ -8,10 +8,8 @@ import { Jumbotron } from './front/js/component/Jumbotron/Jumbotron';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Navbar/>
-    <Jumbotron/>
-  
+  <React.StrictMode> 
+     <App />
   </React.StrictMode>
 );
 

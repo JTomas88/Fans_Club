@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-
+import {Link} from "react-router-dom";
 
 export const Navbar = () => {
     return(
@@ -28,10 +28,15 @@ export const Navbar = () => {
                 </ul>
               </li>             
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            <div>
+              <Link >
+              <button>INICIAR SESION</button>
+              </Link>
+              <Link to = "/formularioRegistro">
+              <button>REGISTRATE</button>
+              </Link>             
+              
+            </div>
           </div>
         </div>
       </nav>
