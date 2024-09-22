@@ -6,8 +6,8 @@ import { FormularioRegistro } from "../../component/FormularioRegistro/Formulari
 
 export const Registro = () => {
     return (
-      <div className="bg-color">
-      <Jumbotron imagenFondo={{ backgroundImage: `url(${img})`}} subtitulo={"Lo siento, no me arrepiento"} />
+      <div className="bg-color mb-3">
+      <Jumbotron imagenFondo={{ backgroundImage: `url(${img})`, backgroundPosition:'center 10%'}} subtitulo={"Lo siento, no me arrepiento"} />
       <div className="text-center align-items-center d-flex">
       <FormularioRegistro/>
       </div>      

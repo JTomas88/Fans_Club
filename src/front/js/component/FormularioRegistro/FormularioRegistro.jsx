@@ -3,7 +3,7 @@ import styles from "./formularioregistro.module.css";
 
 export const FormularioRegistro = () => {
     return (
-        <div className="container">
+        <div className="container mb-5 mt-5">
             <h3 className="justify-text-center">FORMULARIO DE REGISTRO</h3>
             <div className={`${styles.boxFormulario}`}>
                 <form>
