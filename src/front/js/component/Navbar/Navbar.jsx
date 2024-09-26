@@ -33,7 +33,7 @@ export const Navbar = () => {
               <button>INICIAR SESION</button>
               </Link>
               <Link to = "/formularioRegistro">
-              <button>REGISTRATE</button>
+              <button>REGÍSTRATE</button>
               </Link>             
               
             </div>

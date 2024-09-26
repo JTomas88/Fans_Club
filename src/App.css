@@ -44,3 +44,7 @@
 .h1, h3, label{
   color: white;
 }
+
+body{
+  overflow-x: hidden;
+}
