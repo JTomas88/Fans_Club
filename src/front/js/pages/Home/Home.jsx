@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import { SliderHome } from "../../component/SliderHome/SliderHome";
+import { Videos } from "../../component/Videos/Videos";
 import styles from "../Home/home.module.css";
 import img from "../../../assets/fronteyes.png"
 
@@ -14,6 +15,9 @@ export const Home = () => {
             </div>
             <div className="mt-3">
                 <SliderHome />
+            </div>
+            <div>
+                <Videos/>
             </div>
 
         </div>
