@@ -29,9 +29,10 @@ export const Navbar = () => {
               </li>             
             </ul>
             <div>
-              <Link >
+              <Link to = "/inicioSesion" >
               <button>INICIAR SESION</button>
               </Link>
+
               <Link to = "/formularioRegistro">
               <button>REGÍSTRATE</button>
               </Link>             
