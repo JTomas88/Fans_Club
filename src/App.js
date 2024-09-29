@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import injectContext from "./front/js/store/appContext";
 import './App.css';
 import { Navbar } from './front/js/component/Navbar/Navbar';
 import { Jumbotron } from './front/js/component/Jumbotron/Jumbotron';
@@ -25,4 +26,4 @@ function App() {
   );
 }
 
-export default App;
+export default injectContext (App);

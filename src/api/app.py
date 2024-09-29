@@ -1,10 +1,11 @@
 # --ROUTES--
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from api.models import db, Usuario
 from flask_sqlalchemy import SQLAlchemy
 from api.utils import generate_sitemap, APIException
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 
 app = Flask(__name__)
 
@@ -66,6 +67,28 @@ def get_userbyid(user_id):
         return jsonify({'error': 'Usuario no encontrado'}), 404
     
     return jsonify(user.serialize())
+
+
+# --Login a la pagina y creación de token
+@app.route('/login', methods = ['POST'])
+def crear_token():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    usuarios = Usuario.query.filter_by(email = email).first()
+
+    if usuarios is None:
+        return jsonify({'Error': "No se ha encontrado el correo o contraseña"}), 404
+    
+    if not check_password_hash(usuarios.password, password):
+        return jsonify ({'Error': 'Contraseña incorrecta'})
+    
+    # Se crea nuevo token de entrada del usuario a la pagina
+    access_token = create_access_token(identity = usuarios.id)
+
+    return jsonify({"token": access_token, "email":usuarios.email, "username":usuarios.username, "id": usuarios.id})
+
+
 
 
 if __name__ == '__main__':
