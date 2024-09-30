@@ -16,7 +16,7 @@ export const FormularioRegistro = () => {
     const registro = async (event, email, username, password) => {
         event.preventDefault();
 
-        if (!email || !password || username) {
+        if (!email || !password || !username) {
             setError("Por favor, complete todos los datos requeridos");
             return;
         }
@@ -36,10 +36,11 @@ export const FormularioRegistro = () => {
             <div className={`${styles.boxFormulario}`}>
 
                 <form onSubmit={(event) => registro(event, email, username, password)} >
-                    <div class="mb-3">
-                        <label for="inputEmail" class="form-label">Correo Electronico</label>
+                    {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                    <div className="mb-3">
+                        <label htmlFor="inputEmail" className="form-label">Correo Electronico</label>
                         <input type="email"
-                            class="form-control"
+                            className="form-control"
                             id="inputEmail"
                             placeholder="Introduce tu correo electrónico"
                             onChange={(e) => setEmail(e.target.value)} value={email}>
@@ -47,30 +48,30 @@ export const FormularioRegistro = () => {
 
                     </div>
 
-                    <div class="mb-3">
-                        <label for="inputUsuario" class="form-label">Nombre de usuario</label>
+                    <div className="mb-3">
+                        <label htmlFor="inputUsuario" className="form-label">Nombre de usuario</label>
                         <input type="text"
-                            class="form-control"
+                            className="form-control"
                             id="inputUsuario"
                             placeholder="Introduce un nombre de usuario"
                             onChange={(e) => setUsername(e.target.value)} value={username}>
                         </input>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="inputPassword" class="form-label">Contraseña</label>
+                    <div className="mb-3">
+                        <label htmlFor="inputPassword" className="form-label">Contraseña</label>
                         <input type="password"
-                            class="form-control"
+                            className="form-control"
                             id="inputPassword"
                             onChange={(e) => setPassword(e.target.value)} value={password}>
                         </input>
                     </div>
 
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label class="form-check-label" for="exampleCheck1">Recordar mis datos</label>
+                    <div className="mb-3 form-check">
+                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                        <label className="form-check-label" htmlFor="exampleCheck1">Recordar mis datos</label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <button type="submit" className="btn btn-primary">Enviar</button>
                 </form>
             </div>
         </div>

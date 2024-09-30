@@ -7,21 +7,21 @@ export const FormInicioSesion = () => {
         <h3 className="justify-text-center">FORMULARIO DE INICIO DE SESIÓN</h3>
         <div className={`${styles.boxFormulario}`}>
             <form>
-                <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Correo Electronico</label>
-                    <input type="email" class="form-control" id="inputEmail" />
+                <div className="mb-3">
+                    <label htmlFor="inputEmail" className="form-label">Correo Electronico</label>
+                    <input type="email" className="form-control" id="inputEmail" />
                 </div>
 
-                <div class="mb-3">
-                    <label for="inputPassword" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="inputPassword" />
+                <div className="mb-3">
+                    <label htmlFor="inputPassword" className="form-label">Contraseña</label>
+                    <input type="password" className="form-control" id="inputPassword" />
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                    <label class="form-check-label" for="exampleCheck1">Recordar mis datos</label>
+                <div className="mb-3 form-check">
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                    <label className="form-check-label" htmlFor="exampleCheck1">Recordar mis datos</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" className="btn btn-primary">Enviar</button>
             </form>
         </div>
     </div>

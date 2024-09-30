@@ -38,7 +38,7 @@ export const Footer = () => {
                     <a data-bs-toggle="modal" data-bs-target="#modalProteccionDatos">
                         Protección de datos
                     </a>
-                    <div class="modal fade" id="modalProteccionDatos" tabindex="-1" aria-labelledby="modalProteccionDatosLabel" aria-hidden="true">
+                    <div className="modal fade" id="modalProteccionDatos" tabIndex="-1" aria-labelledby="modalProteccionDatosLabel" aria-hidden="true">
                         <ModalProteccionDatos />
                     </div>
                 </div>
@@ -49,7 +49,7 @@ export const Footer = () => {
                     <a data-bs-toggle="modal" data-bs-target="#modalUsoCookies">
                         Uso de cookies
                     </a>
-                    <div class="modal fade" id="modalUsoCookies" tabindex="-1" aria-labelledby="modalUsoCookiesLabel" aria-hidden="true">
+                    <div className="modal fade" id="modalUsoCookies" tabIndex="-1" aria-labelledby="modalUsoCookiesLabel" aria-hidden="true">
                         <ModalUsoCookies />
                     </div>
                 </div>

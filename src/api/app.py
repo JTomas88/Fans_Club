@@ -3,11 +3,15 @@
 from flask import Flask, jsonify, request
 from api.models import db, Usuario
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from api.utils import generate_sitemap, APIException
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 
 app = Flask(__name__)
+
+# Allow CORS requests to this API
+CORS(app)
 
 # Configura la base de datos (esto puede variar según tu configuración)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cfsiennadb.db'
@@ -39,6 +43,10 @@ def crear_usuario():
     if 'username' not in data or 'email' not in data or 'password' not in data:
         return jsonify({"error": 'Falta alguno de los datos'}), 400
     
+    # Busca si ya hay un email registrado con el mismo que se ha introducido y devuelve error si es así
+    if Usuario.query.filter_by(email=data['email']).first():
+        return jsonify({"error": "El correo electrónico ya existe."}), 400
+
     codificar_password = generate_password_hash(data['password'])
 
     nuevo_usuario = Usuario(
@@ -49,6 +57,8 @@ def crear_usuario():
 
     db.session.add(nuevo_usuario)
     db.session.commit()
+
+    return jsonify(nuevo_usuario.serialize()), 201
 
 
 
