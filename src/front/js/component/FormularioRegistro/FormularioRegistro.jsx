@@ -21,6 +21,12 @@ export const FormularioRegistro = () => {
             return;
         }
 
+        store.usuarios.map((usuario)=> {
+            if (usuario.email === email){
+                setError("Este correo electrónico ya existe.Accede en Iniciar Sesion")
+            }
+            
+        })
         await actions.crearUsuario(email, username, password);
         if (store.userData.email) {
             navigate('/');
@@ -72,6 +78,7 @@ export const FormularioRegistro = () => {
                         <label className="form-check-label" htmlFor="exampleCheck1">Recordar mis datos</label>
                     </div>
                     <button type="submit" className="btn btn-primary">Enviar</button>
+                    <p className="text-secondary fst-italic pt-2">¿Ya tienes una cuenta?<Link to="/inicioSesion"><button className="btn text-primary fw-bold">¡Inicia sesión!</button></Link></p>
                 </form>
             </div>
         </div>

@@ -7,8 +7,13 @@ from flask_cors import CORS
 from api.utils import generate_sitemap, APIException
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'CFSIENNATOM'  # Cambia esto por tu propia clave secreta
+jwt = JWTManager(app)
+
+
 
 # Allow CORS requests to this API
 CORS(app)
@@ -96,7 +101,7 @@ def crear_token():
     # Se crea nuevo token de entrada del usuario a la pagina
     access_token = create_access_token(identity = usuarios.id)
 
-    return jsonify({"token": access_token, "email":usuarios.email, "username":usuarios.username, "id": usuarios.id})
+    return jsonify({"token": access_token, "email":usuarios.email, "username":usuarios.username, "id": usuarios.id, "role":usuarios.role})
 
 
 

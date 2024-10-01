@@ -74,7 +74,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                         method: "GET"
                     });
                     const data = await resp.json();
-                    setStore({ usuario: data.allUsers });
+                    setStore({
+                        ...store,
+                        usuarios: data
+                    });
                 } catch (error) {
                     console.log(error);
                 }
@@ -139,12 +142,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
                     const data = await respuesta.json()
 
-                    if (data.access_token) {
+                    if (data.token) {
                         const userData = {
-                            token: data.access_token,
+                            token: data.token,
                             username: data.username,
                             email: data.email,
-                            id: data.id
+                            id: data.id,
+                            role: data.role
                         };
 
                         // Guardamos el objeto anterior en el localStorage, dentro de userData
