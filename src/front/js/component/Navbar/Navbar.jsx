@@ -15,7 +15,7 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="#">Quién es Sienna</a>
+              <Link className="nav-link" to="/quienesSienna">Quién es Sienna</Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">Objetivos CF</a>
@@ -33,7 +33,7 @@ export const Navbar = () => {
 
 
           {store.userData.token ?
-            <button type="button" className={`btn dropdown-toggle fs-5`}  aria-expanded="false">
+            <button type="button" className={`btn dropdown-toggle fs-5`} aria-expanded="false">
               <span className="fa-solid fa-user pe-2"></span>{store.userData.username}
             </button>
             :

@@ -9,6 +9,8 @@ import { Footer } from './front/js/component/Footer/Footer';
 import { Home } from './front/js/pages/Home/Home';
 import { FormInicioSesion } from './front/js/component/FormInicioSesion/FormInicioSesion';
 import { InicioSesion } from './front/js/pages/InicioSesion/InicioSesion';
+import { QuienEsSienna } from './front/js/pages/QuienEsSienna/QuienEsSienna';
+import { Timeline } from './front/js/component/Timeline/Timeline';
 
 function App() {
   return (
@@ -19,6 +21,10 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route path="/formularioRegistro" element={<Registro />} />
         <Route path="/inicioSesion" element={<InicioSesion />} />
+        <Route path= "/quienesSienna" element={<QuienEsSienna />} />
+        <Route path= "/timeline" element={<Timeline />} />
+
+
       </Routes>
     </div>
     <Footer/>

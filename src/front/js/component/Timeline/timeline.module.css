@@ -1,0 +1,33 @@
+/* timeline.module.css */
+
+.chronoMedia {
+    width: 200px; /* Ajusta el ancho del campo media */
+    height: 100px; /* Ajusta la altura del campo media */
+    overflow: hidden; /* Evitar que la imagen se desborde */
+    display: flex; /* Usar flexbox para centrar la imagen */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.chronoMedia img {
+    width: 100%; /* Ajusta la imagen al ancho del contenedor */
+    height: 100%; /* Ajusta la imagen a la altura del contenedor */
+    object-fit: contain; /* Cambia a 'contain' para evitar recortes */
+}
+
+/* Aumenta la especificidad */
+.chronoCard .chronoMedia img {
+    width: 100%; /* Ajusta la imagen al ancho del contenedor */
+    height: 100%; /* Ajusta la imagen a la altura del contenedor */
+    object-fit: contain; /* Cambia a 'contain' para evitar recortes */
+}
+
+.chronoCard p {
+    flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+    display: flex; /* Usar flexbox para centrar el texto */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    text-align: center; /* Alinear el texto al centro */
+    font-size: 50px; /* Ajustar el tamaño de la fuente si es necesario */
+    margin: 10px 0; /* Añadir margen superior e inferior */
+}
