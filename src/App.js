@@ -11,6 +11,10 @@ import { FormInicioSesion } from './front/js/component/FormInicioSesion/FormInic
 import { InicioSesion } from './front/js/pages/InicioSesion/InicioSesion';
 import { QuienEsSienna } from './front/js/pages/QuienEsSienna/QuienEsSienna';
 import { Timeline } from './front/js/component/Timeline/Timeline';
+import { Admin } from './front/js/pages/Admin/Admin';
+import { CompGestionUsuarios } from './front/js/pages/Admin/CompGestionUsuarios';
+import { Agenda } from './front/js/pages/Admin/Agenda';
+import { Fotografias } from './front/js/pages/Admin/Fotografias';
 
 function App() {
   return (
@@ -23,6 +27,15 @@ function App() {
         <Route path="/inicioSesion" element={<InicioSesion />} />
         <Route path= "/quienesSienna" element={<QuienEsSienna />} />
         <Route path= "/timeline" element={<Timeline />} />
+        <Route path= "/admin" element={<Admin />} />
+        <Route path= "/admin/gestionusuarios" element={<CompGestionUsuarios />} />
+        <Route path= "/admin/agenda" element={<Agenda />} />
+        <Route path= "/admin/fotografias" element={<Fotografias />} />
+
+
+
+
+
 
 
       </Routes>

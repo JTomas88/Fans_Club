@@ -22,6 +22,7 @@ export const FormularioRegistro = () => {
         }
 
         store.usuarios.map((usuario)=> {
+            
             if (usuario.email === email){
                 setError("Este correo electrónico ya existe.Accede en Iniciar Sesion")
             }

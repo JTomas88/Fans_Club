@@ -10,7 +10,6 @@ class Usuario(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     username = db.Column(db.String(120), nullable=False)
-    is_active = db.Column(db.Boolean(), default=True)
     name = db.Column(db.String(250))
     lastname = db.Column(db.String(250))
     phone = db.Column(db.String(9))
@@ -25,7 +24,6 @@ class Usuario(db.Model):
             "email": self.email,
             "password": self.password,
             "username": self.username,
-            "is_active": self.is_active,
             "name": self.name,
             "lastname": self.lastname,
             "phone": self.phone,

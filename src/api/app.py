@@ -1,13 +1,34 @@
 # --ROUTES--
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+import os
 from api.models import db, Usuario
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from api.utils import generate_sitemap, APIException
+from api.admin import setup_admin
+from api.commands import setup_commands
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from flask_jwt_extended import JWTManager
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from dotenv import load_dotenv
+load_dotenv()
+
+cloudinary.config(
+    cloud_name='cfsienna',
+    secure = True,
+    api_key='636872762624875',
+    api_secret='vMX9euUWNMQ4CRiOt7QDmLM_9Fk',
+)
+
+
+
+ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
+static_file_dir = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), '../public/')
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'CFSIENNATOM'  # Cambia esto por tu propia clave secreta
@@ -25,21 +46,61 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Inicializa SQLAlchemy
 db.init_app(app)
 
+
+
 # Crear las tablas en la base de datos
 with app.app_context():
     db.create_all()  # Esto crea las tablas definidas en los modelos
+
+# add the admin
+setup_admin(app)
+
+# add the admin
+setup_commands(app)
 
 @app.route('/api/hello', methods=['GET'])
 def hello():
     return jsonify(message="Hello from Flask API")
 
-# Ruta principal que mostrará el sitemap
+# # Ruta principal que mostrará el sitemap
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
 
 
+
+@app.route('/<path:path>', methods=['GET'])
+def serve_any_other_file(path):
+    if not os.path.isfile(os.path.join(static_file_dir, path)):
+        path = 'index.html'
+    response = send_from_directory(static_file_dir, path)
+    response.cache_control.max_age = 0  # avoid cache memory
+    return response
+
 # ___________________ routes ___________________
+
+#Subir foto desde perfil de administrador
+@app.route('/admin/subirfoto', methods=['POST'])
+def admin_subirfoto():
+
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
+    file_to_upload = request.files['file']
+    if file_to_upload.filename == '':
+        return jsonify({"error": "No file selected for uploading"}), 400
+    
+    try:
+        upload = cloudinary.uploader.upload(file_to_upload)
+        print('-------------la url donde esta la imagen-------------', upload['url'])
+        return jsonify(upload)
+    
+    except Exception as e:
+        print(f"Error uploading to Cloudinary: {e}")
+        return jsonify({"error": "Failed to upload image"}), 500
+    
+
+
 
 # --Crear nuevo usuario
 @app.route('/registro', methods=['POST'])
@@ -63,7 +124,12 @@ def crear_usuario():
     db.session.add(nuevo_usuario)
     db.session.commit()
 
-    return jsonify(nuevo_usuario.serialize()), 201
+    access_token = create_access_token(identity=nuevo_usuario.id)
+
+    return jsonify({
+        "mensaje": "nuevo usuario creado correctamente",
+        "access_token": access_token,
+        **nuevo_usuario.serialize()}), 201
 
 
 
@@ -103,6 +169,47 @@ def crear_token():
 
     return jsonify({"token": access_token, "email":usuarios.email, "username":usuarios.username, "id": usuarios.id, "role":usuarios.role})
 
+
+# Editar usuario desde perfil de administrador
+@app.route('/admin/editar/<int:id>', methods = ['PUT'])
+def admin_editar_usuario_(id):
+    usuario = Usuario.query.get(id)
+
+    #Verificar si se enviaron datos
+    if usuario is None:
+        return jsonify({"Error": "No existe el usuario"}), 400
+    
+    data = request.json #Obtenemos los datos de la solicitud y los guardamos en data
+
+    try:
+        if 'role' in data: 
+            usuario.role = data['role']
+        
+        db.session.commit() #Guardamos los cambios en la bd
+
+        return jsonify({"id": usuario.id, "role":usuario.role}), 200
+
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500
+
+
+#Eliminar un usuario desde perfil de administrador
+@app.route('/admin/eliminarusuario/<int:id>', methods = ['DELETE'])
+def admin_eliminar_usuario_(id):
+    usuario = Usuario.query.get(id)
+
+    if usuario is None:
+        return jsonify({"Error": "No existe el usuario"}), 400
+
+    try: 
+        db.session.delete(usuario)
+        db.session.commit()
+        return jsonify({"Mensaje": "Usuario borrado correctamente"}), 200
+
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500
 
 
 
