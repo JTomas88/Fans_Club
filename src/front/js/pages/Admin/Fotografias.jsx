@@ -11,7 +11,7 @@ export const Fotografias = () => {
         try{
             const formData = new FormData();
             formData.append("file", photo);
-            const respuesta = await actions.admin_subirfoto();
+            const respuesta = await actions.admin_subirfoto(formData);
             setFoto(respuesta.url)
             console.log('respuesta', respuesta)
         }catch (error){

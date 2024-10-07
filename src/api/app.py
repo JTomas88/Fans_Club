@@ -2,6 +2,8 @@
 
 from flask import Flask, jsonify, request, send_from_directory
 import os
+import cloudinary
+import cloudinary.uploader
 from api.models import db, Usuario
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -11,19 +13,15 @@ from api.commands import setup_commands
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from flask_jwt_extended import JWTManager
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 from dotenv import load_dotenv
+
+# Cargar el archivo .env
 load_dotenv()
 
+# Configure Cloudinary
 cloudinary.config(
-    cloud_name='cfsienna',
-    secure = True,
-    api_key='636872762624875',
-    api_secret='vMX9euUWNMQ4CRiOt7QDmLM_9Fk',
+    cloudinary_url=os.getenv('CLOUDINARY_URL')
 )
-
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -81,23 +79,13 @@ def serve_any_other_file(path):
 
 #Subir foto desde perfil de administrador
 @app.route('/admin/subirfoto', methods=['POST'])
-def admin_subirfoto():
-
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part in the request"}), 400
-
+def subirfoto():
     file_to_upload = request.files['file']
-    if file_to_upload.filename == '':
-        return jsonify({"error": "No file selected for uploading"}), 400
-    
-    try:
+    if file_to_upload:
         upload = cloudinary.uploader.upload(file_to_upload)
-        print('-------------la url donde esta la imagen-------------', upload['url'])
+        print('-------------la url donde esta la imagen-------------', upload)
         return jsonify(upload)
-    
-    except Exception as e:
-        print(f"Error uploading to Cloudinary: {e}")
-        return jsonify({"error": "Failed to upload image"}), 500
+    return jsonify({"error": "No file uploaded"}), 400
     
 
 

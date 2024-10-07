@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../store/appContext";
+import styles from "../Navbar/navbar.module.css"
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -33,8 +34,8 @@ export const Navbar = () => {
 
 
           {store.userData.token ?
-            <button type="button" className={`btn dropdown-toggle fs-5`} aria-expanded="false">
-              <span className="fa-solid fa-user pe-2"></span>{store.userData.username}
+            <button type="button" className={`${styles.font_name} btn dropdown-toggle fs-5`} aria-expanded="false">
+              {store.userData.username}
             </button>
             :
             <div>
