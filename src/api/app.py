@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, request, send_from_directory
 import os
 import cloudinary
+import cloudinary.api
 import cloudinary.uploader
 from api.models import db, Usuario
 from flask_sqlalchemy import SQLAlchemy
@@ -77,17 +78,61 @@ def serve_any_other_file(path):
 
 # ___________________ routes ___________________
 
+#Crear carpeta desde perfil de administrador
+@app.route('/admin/crearcarpeta', methods=['POST'])
+def crearCarpeta():
+    nombre_carpeta = request.form.get('folder')
+
+    if nombre_carpeta:
+        upload =  cloudinary.api.create_folder(nombre_carpeta) 
+        return jsonify(upload)
+
+    return jsonify({"error": "error al crear carpeta"}), 400
+
+
+#Recuperar las carpetas desde cloudinary y mostrarlas en elfront
+@app.route('/admin/mostrarcarpetas', methods=['GET'])
+def mostrarCarpetas():
+    try:
+        recursos = cloudinary.api.subfolders('')
+        print("Recursos obtenidos desde cloudinary:", recursos)
+        return jsonify(recursos['folders'])
+    except Exception as e:
+        print("Error al obtener carpetas:", str(e))
+        return jsonify({"error": str(e)}), 500
+
+
 #Subir foto desde perfil de administrador
+# @app.route('/admin/subirfoto', methods=['POST'])
+# def subirfoto():
+#     archivo_imagen = request.files['file']
+#     nombre_carpeta = request.form.get('folder')
+
+#     if archivo_imagen:
+#         if nombre_carpeta: #Verificamos si hay un nombre de carpeta 
+#             upload = cloudinary.uploader.upload(archivo_imagen, folder=nombre_carpeta) #Se sube el archivo a la carpeta especificada
+#         else:
+#             upload = cloudinary.uploader.upload(archivo_imagen) #Se sube el archivo sin incluirla en una carpeta. 
+
+#         print('-------------la url donde esta la imagen-------------', upload)
+#         return jsonify(upload)
+    
+#     return jsonify({"error": "No file uploaded"}), 400
+
 @app.route('/admin/subirfoto', methods=['POST'])
 def subirfoto():
-    file_to_upload = request.files['file']
-    if file_to_upload:
-        upload = cloudinary.uploader.upload(file_to_upload)
-        print('-------------la url donde esta la imagen-------------', upload)
-        return jsonify(upload)
-    return jsonify({"error": "No file uploaded"}), 400
-    
+    archivos_imagen = request.files.getlist('files')
+    nombre_carpeta = request.form.get('folder')
 
+    if archivos_imagen and nombre_carpeta:
+        urls = []
+        for archivo in archivos_imagen:
+            upload = cloudinary.uploader.upload(archivo, folder=nombre_carpeta)
+            urls.append(upload['secure_url'])
+
+        return jsonify({"urls": urls})
+    
+    return jsonify({"error": "no se han subido correctamente los archivos"}), 400
 
 
 # --Crear nuevo usuario
