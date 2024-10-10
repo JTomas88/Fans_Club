@@ -31,10 +31,10 @@ export const Footer = () => {
     
             <div className="row text-center">
                 <div className="col">
-                    <a data-bs-toggle="modal" data-bs-target="#modalProteccionDatos">
+                    <a data-bs-toggle="modal" data-bs-target="#modalProteccionDatos" style={{ color: 'black' }}>
                         Protección de datos
                     </a>
-                    <div className="modal fade" id="modalProteccionDatos" tabIndex="-1" aria-labelledby="modalProteccionDatosLabel" aria-hidden="true">
+                    <div className="modal fade" id="modalProteccionDatos" tabIndex="-1" aria-labelledby="modalProteccionDatosLabel" aria-hidden="true" >
                         <ModalProteccionDatos />
                     </div>
                 </div>
@@ -42,7 +42,7 @@ export const Footer = () => {
     
             <div className="row text-center">
                 <div className="col">
-                    <a data-bs-toggle="modal" data-bs-target="#modalUsoCookies">
+                    <a data-bs-toggle="modal" data-bs-target="#modalUsoCookies" style={{ color: 'black' }}>
                         Uso de cookies
                     </a>
                     <div className="modal fade" id="modalUsoCookies" tabIndex="-1" aria-labelledby="modalUsoCookiesLabel" aria-hidden="true">
@@ -52,7 +52,7 @@ export const Footer = () => {
             </div>
     
             <div className="row text-center">
-                <div className="col">
+                <div className="col mt-3" style={{ color: 'black' }}>
                     Designed by Tom © 2024
                 </div>
             </div>

@@ -11,7 +11,6 @@ export const Fotografias = () => {
     const [carpetaSeleccionada, setCarpetaSeleccionada] = useState(null);
     const [carpetaAbierta, setCarpetaAbierta] = useState(null)
     const [imagenesSeleccionadas, setImagenesSeleccionadas] = useState(null)
-    const fileInputRef = useRef(null); // Creamos un ref para el input de archivo
     const navigate = useNavigate();
 
     //Llamo a la función para mostrar las carpetas cuando el componente se cargue.
@@ -55,26 +54,6 @@ export const Fotografias = () => {
         setImagenesSeleccionadas(e.target.files);
     };
 
-    // //Función para subir múltiples fotos a la vez
-    // const subirFoto = async (photo) => {
-    //     if (!nombreCarpeta) {
-    //         alert("Por favor, ingresa el nombre de la carpeta");
-    //         return;
-    //     }
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append("file", photo);
-    //         formData.append("folder", nombreCarpeta);
-
-    //         const respuesta = await actions.admin_subirfoto(formData);
-    //         setFoto(respuesta.url)
-    //         console.log("Imagen subida en la carpeta:", nombreCarpeta, "URL:", respuesta.url)
-    //     } catch (error) {
-    //         console.error("error al subir la imagen:", error)
-    //         return null;
-    //     }
-    // }
-
     const subirFoto = async () => {
         if (!carpetaAbierta) {
             alert("Por favor seleccione una carpeta");
@@ -96,16 +75,15 @@ export const Fotografias = () => {
         try {
             const respuesta = await actions.admin_subirfoto(formData);
             console.log("Imágenes subidas a la carpeta ", carpetaAbierta, "respuesta", respuesta)
-            //Se limpia el input 
+            alert("Imágenes subidas correctamente")
             setImagenesSeleccionadas(null);
-            if (fileInputRef.current){
-                fileInputRef.current.value = '';
-            }
-            alert ("Imágenes subidas correctamente")
+            document.getElementById('file-input').value = ''
         } catch (error) {
             console.error("Error al subir imágenes:", error)
         }
     }
+
+ 
 
     return (
         <div>

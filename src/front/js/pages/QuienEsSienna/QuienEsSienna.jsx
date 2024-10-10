@@ -6,7 +6,6 @@ import { Quien } from "../../component/Quien/Quien";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import { Timeline } from "../../component/Timeline/Timeline";
 import img from "../../../assets/20.jpg";
-import { SliderHome } from "../../component/SliderHome/SliderHome";
 
 export const QuienEsSienna = () => {
     return (

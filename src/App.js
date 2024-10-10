@@ -15,6 +15,8 @@ import { Admin } from './front/js/pages/Admin/Admin';
 import { CompGestionUsuarios } from './front/js/pages/Admin/CompGestionUsuarios';
 import { Agenda } from './front/js/pages/Admin/Agenda';
 import { Fotografias } from './front/js/pages/Admin/Fotografias';
+import { MultimediaFotos } from './front/js/pages/Multimedia/MultimediaFotos';
+import { ObjetivosCF } from './front/js/pages/ObjetivosCF/ObjetivosCF';
 
 function App() {
   return (
@@ -31,6 +33,10 @@ function App() {
         <Route path= "/admin/gestionusuarios" element={<CompGestionUsuarios />} />
         <Route path= "/admin/agenda" element={<Agenda />} />
         <Route path= "/admin/fotografias" element={<Fotografias />} />
+        <Route path= "/multimediafotos" element={<MultimediaFotos />} />
+        <Route path= "/objetivoscf" element={<ObjetivosCF />} />
+
+
 
 
 

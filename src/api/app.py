@@ -102,22 +102,21 @@ def mostrarCarpetas():
         return jsonify({"error": str(e)}), 500
 
 
-#Subir foto desde perfil de administrador
-# @app.route('/admin/subirfoto', methods=['POST'])
-# def subirfoto():
-#     archivo_imagen = request.files['file']
-#     nombre_carpeta = request.form.get('folder')
+#Mostrar el contenido de las carpetas de cloudinary
+@app.route ('/admin/mostrarImagenesCarpetas/<string:nombreCarpeta>', methods=['GET'])
+def mostrar_imagenes_carpeta(nombreCarpeta):
+    try:
+        recursos = cloudinary.api.resources(
+            type="upload",
+            prefix=nombreCarpeta + '/',
+            max_results=100
+        )
+        archivos = recursos.get('resources', [])
+        return archivos
+    except cloudinary.exceptions.Error as e:
+        print (f"Error al obtener el contenido de la carpeta: {e}")
+        return None
 
-#     if archivo_imagen:
-#         if nombre_carpeta: #Verificamos si hay un nombre de carpeta 
-#             upload = cloudinary.uploader.upload(archivo_imagen, folder=nombre_carpeta) #Se sube el archivo a la carpeta especificada
-#         else:
-#             upload = cloudinary.uploader.upload(archivo_imagen) #Se sube el archivo sin incluirla en una carpeta. 
-
-#         print('-------------la url donde esta la imagen-------------', upload)
-#         return jsonify(upload)
-    
-#     return jsonify({"error": "No file uploaded"}), 400
 
 @app.route('/admin/subirfoto', methods=['POST'])
 def subirfoto():

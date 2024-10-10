@@ -10,10 +10,7 @@ import { CompGestionUsuarios } from "./CompGestionUsuarios";
 export const Admin = () => {
     return (
         <div>
-            <div>
-                <Jumbotron imagenFondo={{ backgroundImage: `url(${img})`, backgroundPosition: 'center 10%' }} subtitulo={"Ya no se me para el tiempo"} referencia={'home'} ></Jumbotron>
-            </div>
-            <div className="cointainer row  ">
+            <div className={`cointainer row ${styles.body_admin}`}>
 
                 <Link className="d-flex justify-content-center align-items-center" to="/admin/gestionusuarios">
                 <button type="button" class="btn btn-light">Gestión de usuarios</button>

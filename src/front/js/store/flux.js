@@ -74,6 +74,24 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
+            //Mostrar el contenido de las carpetas de cloudinary
+            admin_mostrarImagenesCarpetas: async (nombreCarpeta) => {
+                const store = getStore()
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/admin/mostrarImagenesCarpetas/${nombreCarpeta}`, {
+                        method: 'GET'
+                    });
+                    if (!respuesta.ok) {
+                        throw new Error(`HTTP error! status ${respuesta.status}`);
+                    }
+                    return await respuesta.json()
+
+                } catch (error) {
+                    console.error("Network error:", error);
+                    return null;
+                }
+            },
+
 
             //subir foto desde perfil de administrador
             admin_subirfoto: async (formData) => {
@@ -87,8 +105,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         throw new Error(`HTTP error! status ${respuesta.status}`);
                     }
                     return await respuesta.json()
-                    // const fotosubida = await respuesta.json();
-                    // return fotosubida;
                 } catch (error) {
                     console.error("Network error:", error);
                     return null;

@@ -5,7 +5,13 @@
     background-repeat: no-repeat;
     color: white;
 }
-
+.jumbotron_edit_foto{
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: black;
+}
 .jumbotron_edit_home {
   position: relative;
   background-position: center;

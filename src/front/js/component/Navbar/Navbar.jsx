@@ -19,14 +19,17 @@ export const Navbar = () => {
               <Link className="nav-link" to="/quienesSienna">Quién es Sienna</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Objetivos CF</a>
+            <Link className="nav-link" to="/objetivoscf">Objetivos CF</Link>
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Multimedia
               </a>
               <ul className="dropdown-menu">
+              <Link to="/multimediafotos" >
                 <li><a className="dropdown-item" href="#">Fotos</a></li>
+                </Link>
+
                 <li><a className="dropdown-item" href="#">Entrevistas</a></li>
               </ul>
             </li>
