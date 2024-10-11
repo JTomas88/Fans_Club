@@ -25,7 +25,7 @@ export const ObjetivosCF = () => {
                         </p>
                     </div>
                     <div className="d-flex justify-content-center mt-5"> 
-                        <img src={foto} className={`${styles.foto}`}></img>
+                        <img src={foto} className={`${styles.foto}`} alt="foto"></img>
                     </div>
 
                 </div>
