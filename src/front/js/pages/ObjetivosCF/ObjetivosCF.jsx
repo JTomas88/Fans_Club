@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React from "react";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import img from "../../../assets/7.jpg"
 import foto from "../../../assets/Diseño sin título.png"

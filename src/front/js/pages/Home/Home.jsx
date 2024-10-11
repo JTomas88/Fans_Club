@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import { SliderHome } from "../../component/SliderHome/SliderHome";
 import { Videos } from "../../component/Videos/Videos";
-import styles from "../Home/home.module.css";
 import img from "../../../assets/fronteyes.png"
 
 

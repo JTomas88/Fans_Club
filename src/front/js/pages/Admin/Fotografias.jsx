@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import styles from "../Admin/admin.module.css";
+import React, { useContext, useEffect, useState} from "react";
 import { Context } from "../../store/appContext";
 import { FaFolder, FaPlus, FaImage } from "react-icons/fa";
 
@@ -11,7 +9,7 @@ export const Fotografias = () => {
     const [carpetaSeleccionada, setCarpetaSeleccionada] = useState(null);
     const [carpetaAbierta, setCarpetaAbierta] = useState(null)
     const [imagenesSeleccionadas, setImagenesSeleccionadas] = useState(null)
-    const navigate = useNavigate();
+
 
     //Llamo a la función para mostrar las carpetas cuando el componente se cargue.
     useEffect(() => {

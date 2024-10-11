@@ -256,7 +256,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             // # Editar usuario desde perfil de administrador
             admin_editar_usuario: async (id, role) => {
                 const store = getStore();
-                const action = getActions();
                 try {
                     const respuesta = await fetch(`${store.backendUrl}/admin/editar/${id}`, {
                         method: 'PUT',
@@ -286,7 +285,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             //Eliminar un usuario desde perfil de administrador
             admin_eliminar_usuario_: async (usuarioId) => {
                 const store = getStore();
-                const action = getActions()
 
                 try {
                     const respuesta = await fetch(`${store.backendUrl}/admin/eliminarusuario/${usuarioId}`, {

@@ -1,7 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import styles from "../QuienEsSienna/quienessienna.module.css";
-import { Context } from "../../store/appContext";
+import React from "react";
 import { Quien } from "../../component/Quien/Quien";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import { Timeline } from "../../component/Timeline/Timeline";

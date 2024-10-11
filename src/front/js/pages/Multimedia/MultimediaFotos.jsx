@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import styles from "../Multimedia/mutimediaFotos.module.css";
-import { Context } from "../../store/appContext";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import img from "../../../assets/3.jpg"
 import { Carpetas } from "../../component/CMultimedia/Fotos/Carpetas";

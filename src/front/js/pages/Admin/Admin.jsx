@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link} from "react-router-dom";
 import styles from "../Admin/admin.module.css";
-import { Context } from "../../store/appContext";
-import img from "../../../assets/fronteyes.png";
-import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
-import { CompGestionUsuarios } from "./CompGestionUsuarios";
 
 
 export const Admin = () => {

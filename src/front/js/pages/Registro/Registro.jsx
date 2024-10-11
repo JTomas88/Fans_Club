@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import img from "../../../assets/1.jpg"
-import styles from "./registro.module.css";
 import { FormularioRegistro } from "../../component/FormularioRegistro/FormularioRegistro";
 
 export const Registro = () => {

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import styles from "../Admin/admin.module.css";
 import { Context } from "../../store/appContext";
-import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 
 
@@ -10,7 +9,6 @@ export const CompGestionUsuarios = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [error, setError] = useState('');
-    const [rol, setRol] = useState('')
 
     //Cargamos los usuarios al montar el componente
     useEffect(() => {

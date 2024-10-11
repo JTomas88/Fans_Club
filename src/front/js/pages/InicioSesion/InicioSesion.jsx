@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Jumbotron } from "../../component/Jumbotron/Jumbotron";
 import img from "../../../assets/1.jpg"
-import styles from "../Registro/registro.module.css";
 import { FormInicioSesion } from "../../component/FormInicioSesion/FormInicioSesion";
 
 export const InicioSesion = () => {

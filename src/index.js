@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Navbar } from './front/js/component/Navbar/Navbar';
 import reportWebVitals from './reportWebVitals';
-import { Jumbotron } from './front/js/component/Jumbotron/Jumbotron';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
