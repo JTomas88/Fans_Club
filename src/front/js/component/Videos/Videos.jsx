@@ -15,7 +15,7 @@ export const Videos = () => {
             <div className={`${styles.tranceVideos} justify-content-center align-items-center d-flex mb-5`} >
                 TRANCE VIDEOS
             </div>
-            <div className="row">
+            <div className={`row ${styles.contenedor}`}>
                 <div className={`col-6 ${styles.canciones}`}>
             
                     <ul>
