@@ -15,8 +15,9 @@ export const MultimediaFotos = () => {
             </div>
             <div className="container justify-content-center align-items-center text-center">
                 <div className={`${styles.titulo}`}>
-                    <h1 className={`${styles.titulo}`}>FOTOS</h1>
+                    <h1 className={`${styles.titulo}`}>FOTOS</h1>                    
                 </div>
+                <p className="text-center">Selecciona una carpeta para ver las fotos</p>
 
                 {/* Pasamos la función setCarpetaSeleccionada a Carpetas para actualizar el estado */}
                 <div>
