@@ -33,5 +33,25 @@ class Usuario(db.Model):
             "role": self.role
         }
     
+class Evento(db.Model):
+    __tablename__='eventos'
+    id = db.Column(db.Integer, primary_key = True)
+    fecha = db.Column(db.Date)
+    poblacion = db.Column(db.String(100))
+    provincia = db.Column(db.String(100))
+    lugar = db.Column(db.String(200))
+    hora = db.Column(db.String(10))
+    entradas = db.Column (db.String(200))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "fecha": self.fecha,
+            "poblacion": self.poblacion,
+            "provincia": self.provincia,
+            "lugar": self.lugar,
+            "hora": self.hora,
+            "entradas": self.entradas
+        }
 
 

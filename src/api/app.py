@@ -5,7 +5,7 @@ import os
 import cloudinary
 import cloudinary.api
 import cloudinary.uploader
-from api.models import db, Usuario
+from api.models import db, Usuario, Evento
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from api.utils import generate_sitemap, APIException
@@ -14,6 +14,7 @@ from api.commands import setup_commands
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 from dotenv import load_dotenv
 
 # Cargar el archivo .env
@@ -41,6 +42,8 @@ CORS(app)
 # Configura la base de datos (esto puede variar según tu configuración)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cfsiennadb.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+migrate = Migrate(app, db)
 
 # Inicializa SQLAlchemy
 db.init_app(app)
