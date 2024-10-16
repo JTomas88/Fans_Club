@@ -1,0 +1,17 @@
+
+
+@font-face {
+    font-family: 'Trance';
+    src: url("../../../assets/whoaskssatan.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+.titTimeLine {
+    font-family: 'Trance';
+    font-size: 70px;
+    color: white;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}

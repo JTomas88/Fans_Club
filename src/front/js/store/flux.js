@@ -19,6 +19,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                 role: null,
             },
 
+            provincias: [
+                "A Coruña", "Álava", "Albacete", "Alicante", "Almería", "Asturias", "Ávila",
+                "Badajoz", "Baleares", "Barcelona", "Burgos", "Cáceres", "Cádiz", "Cantabria",
+                "Castellón", "Ceuta", "Ciudad Real", "Córdoba", "Cuenca", "Girona", "Granada",
+                "Guadalajara", "Guipúzcoa", "Huelva", "Huesca", "Jaén", "La Rioja", "Las Palmas",
+                "León", "Lleida", "Lugo", "Madrid", "Málaga", "Melilla", "Murcia", "Navarra",
+                "Ourense", "Palencia", "Pontevedra", "Salamanca", "Santa Cruz de Tenerife",
+                "Segovia", "Sevilla", "Soria", "Tarragona", "Teruel", "Toledo", "Valencia",
+                "Valladolid", "Vizcaya", "Zamora", "Zaragoza"
+            ],
+
             carpetasFotos: [], //almacena las carpetas para fotos 
 
             backendUrl: 'http://127.0.0.1:5000'
@@ -187,6 +198,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         const datosUsuarioDetalles = {
                             ...store.userData, //cogemos lo que hay en userData, y lo actualizamos con lo siguiente
                             email: data.email,
+                            password: data.password,
                             username: data.username,
                             name: data.name || '',
                             lastname: data.lastname || '',
@@ -226,7 +238,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const data = await respuesta.json()
 
                     if (data.token) {
-                        const userData = {
+                        const datoUsuario = {
                             token: data.token,
                             username: data.username,
                             email: data.email,
@@ -235,12 +247,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                         };
 
                         // Guardamos el objeto anterior en el localStorage, dentro de userData
-                        localStorage.setItem('userData', JSON.stringify(userData))
+                        localStorage.setItem('userData', JSON.stringify(datoUsuario))
 
                         // Actualizamos el store con los nuevos datos 
                         setStore({
                             ...store,
-                            userData: userData
+                            userData: datoUsuario
                         });
                         console.log("Datos:", data)
                     } else {
@@ -303,6 +315,132 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error('Error en la solicitud de eliminación:', error)
                 }
+            },
+
+            //#Editar datos del usuario desde su perfil
+            editar_usuario: async (usuarioId, email, token, username, name, lastname, phone, town, province, address) => {
+                const store = getStore();
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/users/edit/${usuarioId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ usuarioId, email, token, username, name, lastname, phone, town, province, address }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (!respuesta.ok) {
+                        throw new Error(`HTTP error! status: ${respuesta.status}`);
+                    }
+                    const data = await respuesta.json();
+                    const datoUsuario = {
+                        token: data.token,
+                        username: data.username,
+                        name: data.name,
+                        lastname: data.lastname,
+                        email: data.email,
+                        phone: data.phone,
+                        id: data.usuarioId,
+                        town: data.town,
+                        province: data.province,
+                        address: data.address
+                    };
+
+                    // Guardamos el objeto anterior en el localStorage, dentro de userData
+                    localStorage.setItem('userData', JSON.stringify(datoUsuario))
+
+                    setStore({
+                        ...store,
+                        usuarios: store.usuarios.map(usuario => (usuario.id === usuarioId ? data : usuario)),
+                    })
+                    setStore({
+                        userData: datoUsuario
+                    })
+
+
+
+                } catch (error) {
+                    console.error("Error al actualizar el usuario:", error)
+                }
+
+            },
+
+            verificarpwactual: async (userId, password) => {
+                const store = getStore();
+
+
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/verificarpwactual`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            password,
+                        })
+                    })
+                    if (!respuesta.ok) {
+                        throw new Error(`HTTP error! status: ${respuesta.status}`);
+                    }
+
+                    const data = await respuesta.json()
+                    console.log("Respues del servidor: ", data)
+
+                    return data.isValid;
+                }catch (error){
+                    console.error('Error al verificar la contraseña:', error);
+                    return false;
+                }
+
+            },
+
+
+            // Función que cambia la contraseña en sí
+            cambiopassword: async (usuarioId, password) => {
+                const store = getStore();
+                const actions = getActions();
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/users/cambiopassword/${usuarioId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ usuarioId, password }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (!respuesta.ok) {
+                        throw new Error(`HTTP error! status: ${respuesta.status}`);
+                    }
+                    const data = await respuesta.json()
+                    await actions.getUserById()
+                    
+                    setStore({
+                        usuarios: store.usuarios.map(usuario => (usuario.id === usuarioId ? data : usuario)),
+                    })
+                } catch (error) {
+                    console.error("Error al actualizar el password:", error)
+                }
+
+            },
+
+            logOut: () => {
+                const store = getStore();
+
+                localStorage.clear();
+                setStore({
+                    ...store,
+                    userData: {
+                        token: null,
+                        id: '',
+                        email: null,
+                        username: null,
+                        name: null,
+                        lastname: null,
+                        phone: null,
+                        town: null,
+                        province: null,
+                        address: null
+                    }
+                })
             },
 
 

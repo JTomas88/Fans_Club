@@ -118,6 +118,7 @@ def mostrar_imagenes_carpeta(nombreCarpeta):
         return None
 
 
+#Subir foto para importar a cloudinary
 @app.route('/admin/subirfoto', methods=['POST'])
 def subirfoto():
     archivos_imagen = request.files.getlist('files')
@@ -180,6 +181,101 @@ def get_userbyid(user_id):
         return jsonify({'error': 'Usuario no encontrado'}), 404
     
     return jsonify(user.serialize())
+
+
+#Editar datos del usuario desde su perfil
+@app.route('/users/edit/<int:user_id>', methods=['PUT'])
+def editar_usuario(user_id):
+    usuario = Usuario.query.get(user_id)
+    if usuario is None:
+        return jsonify({"error": "usuario no encontrado"}), 404
+    
+    data = request.json
+
+    if not data:
+        return jsonify({"error": "sin datos"}), 400
+    
+    try:
+        if 'name' in data:
+            usuario.name = data['name']
+        if 'token' in data:
+            usuario.token = data['token']
+        if 'email' in data:
+            usuario.email = data['email']
+        if 'id' in data:
+            usuario.id = data['id']
+        if 'lastname' in data:
+            usuario.lastname = data['lastname']
+        if 'phone' in data:
+            usuario.phone = data['phone']
+        if 'town' in data:
+            usuario.town = data['town']
+        if 'province' in data:
+            usuario.province = data['province']
+        if 'address' in data:
+            usuario.address = data['address']
+
+        db.session.commit()
+        return jsonify(data), 200
+    
+    except Exception as e:
+        db.session.rollback()  # Revierte los cambios en caso de error
+        return jsonify({"error": str(e)}), 500
+
+
+
+#Verificar si la contraseña actual es la correcta
+@app.route('/verificarpwactual', methods=['POST'])
+def verificarpwactual():
+    #Extraemos los datos enviados por el front
+    data=request.json
+ 
+
+    user_id = data.get('userId')
+    current_password = data.get('password')
+
+
+
+    if not user_id or not current_password:
+        return jsonify({"error": "faltan datos"}), 400
+    
+    user = Usuario.query.get(user_id)
+    if not user:
+        return jsonify({"Error": "usuario no encontrado"}), 400
+    
+    if check_password_hash(user.password, current_password):
+        return jsonify({'isValid': True}), 200
+    else:
+        return jsonify({'isValid': False}), 200
+
+
+
+
+
+
+
+
+#Cambio de contraseña desde perfil del usuario
+@app.route('/users/cambiopassword/<int:user_id>', methods=['PUT'])
+def cambiopassword(user_id):
+    usuario = Usuario.query.get(user_id)
+    if usuario is None:
+        return jsonify({"error": "usuario no encontrado"}), 404
+    
+    data = request.json
+
+    codificar_password = generate_password_hash(data['password'])
+
+    usuario.password = codificar_password
+    db.session.commit()
+    return jsonify({"mensaje": "cambio contrasena ok"}), 200
+
+        
+
+
+
+
+
 
 
 # --Login a la pagina y creación de token

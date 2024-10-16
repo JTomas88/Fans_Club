@@ -11,5 +11,15 @@
     color: black;
 }
 
+.font_name:hover{
+    color: red
+}
 
+.font_name:focus {
+    color: red;
+}
+
+.font_name:focus:not(:hover){
+    color: black;
+}
 

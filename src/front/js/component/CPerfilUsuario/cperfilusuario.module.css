@@ -1,0 +1,22 @@
+.alert_enter {
+    opacity: 0;
+    transform: translate(-20px);
+}
+
+.alert_enter_active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.alert_exit_active {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+  /* Animación de salida */
+  .alert_exit {
+    opacity: 1;
+    transform: translateY(0);
+  }

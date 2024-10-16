@@ -8,7 +8,7 @@ import img4 from "../../../assets/5.jpg";
 export const SliderHome = () => {
     return (
         <div className="containter d-flex align-items-center justify-content-center">
-            <div id="carouselExampleRide" className="carousel slide " data-bs-ride="true">
+            <div id="carouselExampleRide" className="carousel slide " data-bs-ride="carousel">
                 <div className="carousel-inner">
                     <div className={`${styles.carousel_item} carousel-item active `}>
                         <img src={img1} className={`d-block w-40 ${styles.carousel_image}`} alt="..." />

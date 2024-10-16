@@ -17,6 +17,8 @@ import { Agenda } from './front/js/pages/Admin/Agenda';
 import { Fotografias } from './front/js/pages/Admin/Fotografias';
 import { MultimediaFotos } from './front/js/pages/Multimedia/MultimediaFotos';
 import { ObjetivosCF } from './front/js/pages/ObjetivosCF/ObjetivosCF';
+import { CPerfilUsuario } from './front/js/component/CPerfilUsuario/CPerfilUsuario';
+import { PerfilUsuario } from './front/js/pages/PerfilUsuario/PerfilUsuario';
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
         <Route path= "/admin/fotografias" element={<Fotografias />} />
         <Route path= "/multimediafotos" element={<MultimediaFotos />} />
         <Route path= "/objetivoscf" element={<ObjetivosCF />} />
+        <Route path= "/perfilusuario" element={<PerfilUsuario />} />
+
+
 
 
 

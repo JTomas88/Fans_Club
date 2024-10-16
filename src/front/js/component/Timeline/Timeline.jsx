@@ -33,7 +33,7 @@ export const Timeline = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <style>
         {`
             .ToolbarWrapper-sc-cif21b-6 {
@@ -112,7 +112,7 @@ export const Timeline = () => {
             },
             cardDetailedText: `Se publica Trance: un disco con nuevos sonidos donde se suelta la rabia más humana.`,
           },
-        ]}
+        ].reverse()}
         mode="VERTICAL_ALTERNATING"
         cardHeight={350} // Ajustar la altura de las tarjetas
         mediaHeight={300}

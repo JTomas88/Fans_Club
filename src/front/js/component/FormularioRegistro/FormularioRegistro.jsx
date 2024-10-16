@@ -30,7 +30,7 @@ export const FormularioRegistro = () => {
         })
         await actions.crearUsuario(email, username, password);
         if (store.userData.email) {
-            navigate('/');
+            navigate('/perfilUsuario');
         }
     }
 
