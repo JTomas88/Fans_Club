@@ -34,9 +34,12 @@ export const Navbar = () => {
                 Multimedia
               </a>
               <ul className="dropdown-menu">
-                <Link to="/multimediafotos" >
-                  <li><a className="dropdown-item" href="#">Fotos</a></li>
+                <li>
+                <Link to="/multimediafotos" className="dropdown-item" >
+                  <li>Fotos</li>
                 </Link>
+                </li>
+             
 
                 <li><a className="dropdown-item" href="#">Entrevistas</a></li>
               </ul>

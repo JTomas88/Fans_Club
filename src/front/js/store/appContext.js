@@ -20,6 +20,7 @@ const injectContext = PassedComponent => {
 
         useEffect(() => {
 			state.actions.getAllUsers()
+			state.actions.admin_obtenereventos()
 		}, []);
 
 

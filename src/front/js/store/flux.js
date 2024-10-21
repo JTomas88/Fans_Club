@@ -32,6 +32,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             carpetasFotos: [], //almacena las carpetas para fotos 
 
+            eventos: [],
+
             backendUrl: 'http://127.0.0.1:5000'
         },
 
@@ -39,6 +41,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
         actions: {
+
+            buscarlocalidad: async (query) => {
+                const store = getStore()
+                try{
+                    const respuesta = await fetch(`${store.backendUrl}/buscar_localidad?q=${query}`, {
+                        method: 'GET',
+                    });
+                    if (!respuesta.ok) {
+                        throw new Error(`HTTP error! status ${respuesta.status}`);
+                    }
+                    return respuesta;
+
+                }catch(error){
+                    console.error("Network error:", error);
+                }
+            },
 
             //crear carpeta desde perfil de administrador
             admin_crearCarpeta: async (formData) => {
@@ -121,6 +139,70 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return null;
                 }
             },
+
+            //crear evento desde perfil de administrador
+            admin_crearevento: async (fechaEv, poblacionEv, provinciaEv, lugarEv, horaEv, entradasEv, observacionesEv) => {
+                const store = getStore();
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/admin/crearevento`, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            fecha: fechaEv,
+                            poblacion: poblacionEv,
+                            provincia: provinciaEv,
+                            lugar: lugarEv,
+                            hora: horaEv,
+                            entradas: entradasEv,
+                            observaciones: observacionesEv
+                        }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+
+                    if (!respuesta.ok) {
+                        const error = await respuesta.json();
+                        console.error("Error:", error)
+                        return error;
+                    }
+
+                    const data = await respuesta.json();
+
+
+                    if (data) {
+                        setStore({
+                            ...store,
+                            eventos: data
+                        });
+                        console.log("Success:", data);
+                    } else {
+                        console.error("Datos no recibidos:", data)
+                    }
+                } catch (error) {
+                    console.error("Error:", error)
+                }
+            },
+
+            //Función para obtener todos los eventos creados
+            admin_obtenereventos: async () => {
+                const store = getStore();
+                try {
+                    const respuesta = await fetch(`${store.backendUrl}/admin/obtenereventos`, {
+                        method: 'GET'
+                    });
+                    const data = await respuesta.json();
+                    setStore({
+                        ...store,
+                        eventos: data
+                    });
+
+                } catch (error) {
+                    console.log(error)
+                }
+
+            },
+
+
 
             // --Crear nuevo usuario
             crearUsuario: async (email, username, password) => {
@@ -387,7 +469,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.log("Respues del servidor: ", data)
 
                     return data.isValid;
-                }catch (error){
+                } catch (error) {
                     console.error('Error al verificar la contraseña:', error);
                     return false;
                 }
@@ -412,7 +494,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                     const data = await respuesta.json()
                     await actions.getUserById()
-                    
+
                     setStore({
                         usuarios: store.usuarios.map(usuario => (usuario.id === usuarioId ? data : usuario)),
                     })
@@ -422,6 +504,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             },
 
+            //Salir
             logOut: () => {
                 const store = getStore();
 

@@ -1,21 +1,30 @@
-# --ROUTES--
-
 from flask import Flask, jsonify, request, send_from_directory
 import os
 import cloudinary
 import cloudinary.api
 import cloudinary.uploader
-from api.models import db, Usuario, Evento
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
+from dotenv import load_dotenv
+from api.models import db, Usuario, Evento  # Asegúrate de que esto esté después de inicializar `db`
 from api.utils import generate_sitemap, APIException
 from api.admin import setup_admin
 from api.commands import setup_commands
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from flask_jwt_extended import JWTManager
-from flask_migrate import Migrate
-from dotenv import load_dotenv
+from datetime import datetime
+import requests
+
+
+# Configuración de la base de datos
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'CFSIENNATOM'  # Cambia esto por tu propia clave secreta
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cfsiennadb.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)  # Asegúrate de que esto esté después de configurar la app
+migrate = Migrate(app, db)
+
 
 # Cargar el archivo .env
 load_dotenv()
@@ -26,33 +35,35 @@ cloudinary.config(
 )
 
 
-ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-static_file_dir = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), '../public/')
 
-app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'CFSIENNATOM'  # Cambia esto por tu propia clave secreta
+GOOGLE_API_KEY = 'AIzaSyDyduKdXuV4S-AS3xFgTUvxtTnEiqy5lS8'
+
+
+
+# Inicializa CORS y JWT
+CORS(app)
 jwt = JWTManager(app)
 
 
 
-# Allow CORS requests to this API
-CORS(app)
+# Rutas
+@app.route('/api/hello', methods=['GET'])
+def hello():
+    return jsonify(message="Hello from Flask API")
 
-# Configura la base de datos (esto puede variar según tu configuración)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cfsiennadb.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+@app.route('/')
+def sitemap():
+    return generate_sitemap(app)
 
-migrate = Migrate(app, db)
-
-# Inicializa SQLAlchemy
-db.init_app(app)
-
-
-
-# Crear las tablas en la base de datos
-with app.app_context():
-    db.create_all()  # Esto crea las tablas definidas en los modelos
+@app.route('/<path:path>', methods=['GET'])
+def serve_any_other_file(path):
+    static_file_dir = os.path.join(os.path.dirname(
+        os.path.realpath(__file__)), '../public/')
+    if not os.path.isfile(os.path.join(static_file_dir, path)):
+        path = 'index.html'
+    response = send_from_directory(static_file_dir, path)
+    response.cache_control.max_age = 0  # avoid cache memory
+    return response
 
 # add the admin
 setup_admin(app)
@@ -60,26 +71,61 @@ setup_admin(app)
 # add the admin
 setup_commands(app)
 
-@app.route('/api/hello', methods=['GET'])
-def hello():
-    return jsonify(message="Hello from Flask API")
+# ___________________ RUTAS FUNCIONALIDADES ___________________
 
-# # Ruta principal que mostrará el sitemap
-@app.route('/')
-def sitemap():
-    return generate_sitemap(app)
+@app.route('/buscar_localidad', methods=['GET'])
+def buscar_localidad():
+    query = request.args.get('q')
+    url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={query}&language=es&types=locality&components=country:ES&key={GOOGLE_API_KEY}'
+    
+    try:
+        # Hacer la solicitud a la API de Google Places
+        response = requests.get(url)
+        response.raise_for_status()  # Verificar si la solicitud fue exitosa
+        data = response.json()  # Parsear la respuesta en formato JSON
+
+        # Extraer las predicciones de la respuesta
+        localidades = []
+        for item in data.get('predictions', []):
+            place_id = item['place_id']
+
+            provincia = detalle_localidad(place_id)
+
+            localidades.append({
+                'descripcion': item['description'],  # Descripción completa de la localidad
+                'place_id': item['place_id'],    # Identificador único del lugar
+                'provincia': provincia
+            })
+
+        # Devolver las localidades en formato JSON
+        return jsonify(localidades), 200
+    except requests.exceptions.RequestException as e:
+        # Manejar errores y devolver un mensaje de error
+        return jsonify({'error': str(e)}), 500
+    
+
+def detalle_localidad(place_id):
+        url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={GOOGLE_API_KEY}'
+        respuesta = requests.get(url)
+        if respuesta.status_code == 200:
+            data = respuesta.json()
+            address_components = data.get('result', {}).get('address_components',[])
+
+            provincia = None
+            for component in address_components:
+                if 'administrative_area_level_2' in component ['types']:
+                    provincia = component['long_name']
+                    break
+
+            return provincia
+        else:
+            print (f"Error: {respuesta.status_code}")
+            return None
 
 
+    
 
-@app.route('/<path:path>', methods=['GET'])
-def serve_any_other_file(path):
-    if not os.path.isfile(os.path.join(static_file_dir, path)):
-        path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
-    return response
 
-# ___________________ routes ___________________
 
 #Crear carpeta desde perfil de administrador
 @app.route('/admin/crearcarpeta', methods=['POST'])
@@ -136,6 +182,42 @@ def subirfoto():
         return jsonify({"urls": urls})
     
     return jsonify({"error": "no se han subido correctamente los archivos"}), 400
+
+#Crear un evento desde perfil de administrador
+@app.route('/admin/crearevento', methods=['POST'])
+def crearevento():
+    data = request.json
+
+    fecha_str = data['fecha']
+    try:
+        fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+    except ValueError:
+        return jsonify({"mensaje": "formato no valido"}), 400
+    
+    nuevoEvento = Evento(
+        fecha = fecha,
+        poblacion = data['poblacion'],
+        provincia = data['provincia'],
+        lugar = data['lugar'],
+        hora = data['hora'],
+        entradas = data['entradas'],
+        observaciones = data['observaciones']
+    )
+
+    db.session.add(nuevoEvento)
+    db.session.commit()
+
+    return jsonify({
+        "mensaje": "Evento creado correctamente",
+        **nuevoEvento.serialize()
+    }), 201
+
+
+#Función para obtener todos los eventos creados
+@app.route('/admin/obtenereventos', methods=['GET'])
+def obtenereventos():
+    eventos = Evento.query.all()
+    return jsonify([evento.serialize() for evento in eventos])
 
 
 # --Crear nuevo usuario
@@ -346,4 +428,5 @@ def admin_eliminar_usuario_(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
